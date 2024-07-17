@@ -21,7 +21,9 @@ const start = async () => {
 
   // Add your own express routes here
 
-  app.listen(3000)
+  app.listen(3000, async () => {
+    payload.logger.info(`Server running at http://localhost:3000`)
+  },)
 }
 
 start()

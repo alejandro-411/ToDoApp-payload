@@ -8,6 +8,8 @@ import { buildConfig } from 'payload/config'
 import { config as dotenvConfig } from 'dotenv'
 
 import Users from './collections/Users'
+import Tasks from './collections/Tasks'
+import Media from './collections/Media'
 
 export default buildConfig({
   admin: {
@@ -15,7 +17,10 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users],
+  collections: [Users,
+    Tasks,
+    Media
+  ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
