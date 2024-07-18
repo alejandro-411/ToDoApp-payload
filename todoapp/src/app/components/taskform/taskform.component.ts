@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PayloadService } from '../../services/payload.service';
 import { Task } from '../../models/task.model';
@@ -10,6 +10,7 @@ import { Task } from '../../models/task.model';
   styleUrls: ['./taskform.component.css']
 })
 export class TaskFormComponent implements OnInit {
+  @Output() taskCreated = new EventEmitter<void>();
   taskForm: FormGroup;
 
   constructor(
@@ -42,6 +43,7 @@ export class TaskFormComponent implements OnInit {
         next: (newTask: Task) => {
           console.log('Task created:', newTask);
           this.taskForm.reset();
+          this.taskCreated.emit();
         },
         error: (error) => {
           console.error('Error creating task:', error);
@@ -49,5 +51,6 @@ export class TaskFormComponent implements OnInit {
       });
     }
   }
+  
 
 }

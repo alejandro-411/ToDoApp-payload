@@ -34,6 +34,17 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  loadTasks(): void{
+    this.payloadService.getTasks().subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
+    }, error => {
+      console.error('Error fetching tasks:', error);
+    });
+  }
+
+  onTaskCreated(): void {
+    this.loadTasks()}
+
   getTaskImageUrl(imageId: string): string {
     const url = `http://localhost:3000/media/${imageId}`;  
     console.log('Image URL:', url);
