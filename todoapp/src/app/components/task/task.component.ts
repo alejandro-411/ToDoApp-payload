@@ -50,4 +50,9 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  onTaskCreated(newTask: Task) {
+    this.tasks.push(newTask);
+  }
+
+
 }

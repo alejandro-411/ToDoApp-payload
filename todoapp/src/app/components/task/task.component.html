@@ -10,7 +10,7 @@
             <p class="card-text">{{ task.description }}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <p><strong>Completed:</strong> {{ task.completed }}</p>
+                <p><strong>Completada:</strong> {{ task.completed }}</p>
                 <button class="btn btn-sm btn-success" (click)="toggleTaskCompletion(task)">
                   {{ task.completed ? 'Mark as Incomplete' : 'Mark as Complete' }}
                 </button>

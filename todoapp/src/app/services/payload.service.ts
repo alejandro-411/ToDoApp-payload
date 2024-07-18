@@ -1,6 +1,4 @@
-// src/app/payload.service.ts
 import { Injectable } from '@angular/core';
-//import axios from 'axios';
 import { Observable } from 'rxjs';
 import { Task } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
@@ -15,33 +13,14 @@ export class PayloadService {
 
   constructor(private http: HttpClient ) { }
 
-  /**
-   * Retrieves tasks from the Payload CMS.
-   * @returns {Promise<any>} A promise that resolves to the tasks data.
-   * @throws {Error} If there is an error fetching tasks from the Payload CMS.
-   */
-  /*async getTasks() {
-    try {
-      const response = await axios.get(`${this.baseUrl}/tasks`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching tasks from Payload CMS:', error);
-      throw error;
-    }
-  }*/
-
-    
-    /*getTasks(): Observable<Task[]> {
-      return this.http.get<Task[]>(`${this.baseUrl}/tasks`);
-    }*/
 
       getTasks(): Observable<Task[]> {
         return this.http.get<{ docs: Task[] }>(`${this.baseUrl}/tasks`).pipe(
           map(response => response.docs)
         );
       }
-    
-      createTask(task: Task): Observable<Task> {
+    /*
+    createTask(task: Task): Observable<Task> {
         const formData = new FormData();
         formData.append('title', task.title);
         formData.append('description', task.description);
@@ -50,22 +29,36 @@ export class PayloadService {
           formData.append('image', task.image.id);
         }
     
-        return this.http.post<Task>(`${this.baseUrl}/api/tasks`, formData);
-      }
+        return this.http.post<Task>(`${this.baseUrl}/tasks`, formData);
+      }*/
 
-      editTask(task: Task): Observable<Task> {
-        return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, task);
-      }
+        createTask(task: Task): Observable<Task> {
+          const formData = new FormData();
+          formData.append('title', task.title);
+          formData.append('description', task.description);
+          formData.append('completed', task.completed.toString());
+          if (task.image instanceof Blob) {  // Asegúrate de que task.image es un Blob
+            formData.append('image', task.image, task.image.filename);
+          }
+        
+          return this.http.post<Task>(`${this.baseUrl}/tasks`, formData);
+        }
+        
 
-
-  /*
-  async deleteTask(taskId: string) {
-    try {
-      const response = await axios.delete(`${this.baseUrl}/tasks/${taskId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error deleting task in Payload CMS:', error);
-      throw error;
-    }
-  }*/
+          editTask(task: Task): Observable<Task> {
+            const formData = new FormData();
+            formData.append('title', task.title);
+            formData.append('description', task.description);
+            formData.append('completed', task.completed.toString());
+        
+            if (task.image && (task.image instanceof Blob)) {
+              formData.append('image', task.image);  // Asume que task.image es un Blob
+            } else if (task.image && task.image.filename) {
+              // Si la imagen ya existe y solo estamos enviando el identificador
+              formData.append('imageID', task.image.id); 
+            }
+        
+            return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
+          }
+  
 }
