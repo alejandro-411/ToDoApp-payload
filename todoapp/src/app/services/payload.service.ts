@@ -53,18 +53,12 @@ export class PayloadService {
         return this.http.post<Task>(`${this.baseUrl}/api/tasks`, formData);
       }
 
-/*
-  async updateTask(taskId: string, task: any) {
-    try {
-      const response = await axios.put(`${this.baseUrl}/tasks/${taskId}`, task); // PUT request to update the task
-      return response.data;
-    } catch (error) {
-      console.error('Error updating task in Payload CMS:', error);
-      throw error;
-    }
-  }
+      editTask(task: Task): Observable<Task> {
+        return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, task);
+      }
 
 
+  /*
   async deleteTask(taskId: string) {
     try {
       const response = await axios.delete(`${this.baseUrl}/tasks/${taskId}`);

@@ -1,7 +1,27 @@
-<div *ngFor="let task of tasks">
-    <h2>{{ task.title }}</h2>
-    <p>{{ task.description }}</p>
-    <p><strong>Completed:</strong> {{ task.completed }}</p>
-    <img *ngIf="task.image" [src]="getTaskImageUrl(task.image.filename)" alt="Task Image">
+<div class="container mt-5">
+    <div *ngIf="showAlert" class = "alert alert-info" role="alert">
+        {{alertMessage}}
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mb-3" *ngFor="let task of tasks">
+          <div class="card-body">
+            <h5 class="card-title">{{ task.title }}</h5>
+            <p class="card-text">{{ task.description }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <p><strong>Completed:</strong> {{ task.completed }}</p>
+                <button class="btn btn-sm btn-success" (click)="toggleTaskCompletion(task)">
+                  {{ task.completed ? 'Mark as Incomplete' : 'Mark as Complete' }}
+                </button>
+              </div>
+              <div>
+                <img *ngIf="task.image" [src]="getTaskImageUrl(task.image.filename)" alt="Task Image" class="img-fluid" style="max-width: 100px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   

@@ -9,6 +9,8 @@ import { PayloadService } from '../../services/payload.service';
 })
 export class TaskComponent implements OnInit {
   tasks: Task[] = [];
+  showAlert: boolean = false; // Declare the showAlert property
+  alertMessage: string = ''; // Declare the alertMessage property
 
   constructor(private payloadService: PayloadService) { }
 
@@ -21,9 +23,31 @@ export class TaskComponent implements OnInit {
   }
 
   getTaskImageUrl(imageId: string): string {
-    const url = `http://localhost:3000/media/${imageId}.jpg`;  // Asegúrate de que la extensión es correcta
+    const url = `http://localhost:3000/media/${imageId}`;  
     console.log('Image URL:', url);
     return url;
+  }
+
+  toggleTaskCompletion(task: Task): void {
+    const wasCompleted = task.completed;
+    task.completed = !task.completed;
+    this.payloadService.editTask(task).subscribe({
+      next: (updatedTask: Task) => {
+        if (!wasCompleted) {
+          // Solo muestra la alerta si la tarea ahora está completada
+          this.showAlert = true;
+          this.alertMessage = '¡Tarea completada con éxito!';
+          setTimeout(() => this.showAlert = false, 3000);
+        }
+        console.log('Task updated:', updatedTask);
+      },
+      error: (error) => {
+        console.error('Error updating task:', error);
+        // Revertir el cambio si la actualización falla
+        task.completed = wasCompleted;
+        // Opcional: Mostrar un mensaje de error al usuario
+      }
+    });
   }
 
 }

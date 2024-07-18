@@ -5,6 +5,9 @@ const Tasks: CollectionConfig = {
     slug: 'tasks',
     access: {
     read:()=> true,
+    create: () => true,
+    update: () => true,
+    delete: () => true
     },
 
     fields: [
@@ -27,7 +30,7 @@ const Tasks: CollectionConfig = {
             relationTo: 'media',
         },
 
-        
+
 
     ]
 };
