@@ -1,0 +1,7 @@
+<div *ngFor="let task of tasks">
+    <h2>{{ task.title }}</h2>
+    <p>{{ task.description }}</p>
+    <p><strong>Completed:</strong> {{ task.completed }}</p>
+    <img *ngIf="task.image" [src]="getTaskImageUrl(task.image.filename)" alt="Task Image">
+  </div>
+  

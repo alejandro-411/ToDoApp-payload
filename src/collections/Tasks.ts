@@ -3,6 +3,9 @@ import  Media from "./Media";
 
 const Tasks: CollectionConfig = {
     slug: 'tasks',
+    access: {
+    read:()=> true,
+    },
 
     fields: [
         {
@@ -23,6 +26,8 @@ const Tasks: CollectionConfig = {
             type: 'upload',
             relationTo: 'media',
         },
+
+        
 
     ]
 };

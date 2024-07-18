@@ -4,6 +4,7 @@ const Media: CollectionConfig = {
   slug: 'media',
   upload: {
     staticDir: 'media',
+    staticURL: '/media',
     mimeTypes: ['image/*'],
   },
   fields: [

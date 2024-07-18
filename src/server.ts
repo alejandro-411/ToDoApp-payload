@@ -1,13 +1,24 @@
 import express from 'express'
 import payload from 'payload'
+import cors from 'cors'
+import path from 'path'
 
 require('dotenv').config()
 const app = express()
+
+const corsOptions = {
+  origin: 'http://localhost:4200',
+}
+
+app.use(cors(corsOptions))
 
 // Redirect root to Admin panel
 app.get('/', (_, res) => {
   res.redirect('/admin')
 })
+
+app.use('/media', express.static(path.join(__dirname, 'media')));
+
 
 const start = async () => {
   // Initialize Payload
