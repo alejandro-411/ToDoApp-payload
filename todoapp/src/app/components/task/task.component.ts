@@ -22,6 +22,18 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  deleteTask(task: Task): void {
+    this.payloadService.deleteTask(task).subscribe({
+      next: () => {
+        console.log('Task deleted');
+        this.tasks = this.tasks.filter(t => t.id !== task.id);
+      },
+      error: (error) => {
+        console.error('Error deleting task:', error);
+      }
+    });
+  }
+
   getTaskImageUrl(imageId: string): string {
     const url = `http://localhost:3000/media/${imageId}`;  
     console.log('Image URL:', url);
@@ -49,10 +61,5 @@ export class TaskComponent implements OnInit {
       }
     });
   }
-
-  onTaskCreated(newTask: Task) {
-    this.tasks.push(newTask);
-  }
-
 
 }

@@ -37,7 +37,7 @@ export class PayloadService {
           formData.append('title', task.title);
           formData.append('description', task.description);
           formData.append('completed', task.completed.toString());
-          if (task.image instanceof Blob) {  // Asegúrate de que task.image es un Blob
+          if (task.image instanceof Blob) {  
             formData.append('image', task.image, task.image.filename);
           }
         
@@ -59,6 +59,10 @@ export class PayloadService {
             }
         
             return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
+          }
+
+          deleteTask(task: Task): Observable<void> {
+            return this.http.delete<void>(`${this.baseUrl}/tasks/${task.id}`);
           }
   
 }

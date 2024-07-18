@@ -50,17 +50,4 @@ export class TaskFormComponent implements OnInit {
     }
   }
 
-  /*createTask(){
-    if(this.taskForm.valid){
-      const task: Task = this.taskForm.value;
-      this.payloadService.createTask(task).subscribe({
-        next: (newTask: Task) => {
-          console.log('Task created:', newTask);
-          this.taskForm.reset();
-        },
-        error: (error) => {
-          console.error('Error creating task:', error);
-        }
-      })};
-  }*/
 }
