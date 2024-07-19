@@ -1,18 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { PayloadService } from '../../services/payload.service';
+import { EditTaskService } from 'src/app/services/edit-task.service';
+
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
+
 export class TaskComponent implements OnInit {
   tasks: Task[] = [];
   showAlert: boolean = false; // Declare the showAlert property
   alertMessage: string = ''; // Declare the alertMessage property
+  taskToEdit: Task | null = null; // Declare the taskToEddit property
 
-  constructor(private payloadService: PayloadService) { }
+  constructor(
+    private payloadService: PayloadService,
+    private editTaskService: EditTaskService // Inyecta el servicio
+  ) {}
 
   /**
    * Initializes the component.
@@ -43,6 +50,7 @@ export class TaskComponent implements OnInit {
       }
     });
   }
+ 
 
   /**
    * Loads tasks from the payload service.
@@ -101,6 +109,20 @@ export class TaskComponent implements OnInit {
         // Opcional: Mostrar un mensaje de error al usuario
       }
     });
+  }
+
+  editTask(task: Task): void {
+    this.taskToEdit = task;
+    this.editTaskService.setTaskToEdit(task);
+    this.editTaskService.setFormCollapsed(false);
+    console.log('Task to edit:', this.taskToEdit);
+  }
+
+  onTaskUpdated(updatedTask: Task): void {
+   const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+   if(index !== -1) {
+     this.tasks[index] = updatedTask;
+   }
   }
 
 }

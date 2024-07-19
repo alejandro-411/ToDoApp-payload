@@ -32,7 +32,7 @@ export class PayloadService {
           return this.http.post<Task>(`${this.baseUrl}/tasks`, formData);
         }
         
-
+          /*
           editTask(task: Task): Observable<Task> {
             const formData = new FormData();
             formData.append('title', task.title);
@@ -47,7 +47,19 @@ export class PayloadService {
             }
         
             return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
-          }
+          }*/
+
+            editTask(task: Task): Observable<Task> {
+              const formData = new FormData();
+              formData.append('title', task.title);
+              formData.append('description', task.description);
+              formData.append('completed', task.completed.toString());
+              if (task.image) {
+                formData.append('image', task.image.id);
+              }
+          
+              return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
+            }
 
           deleteTask(task: Task): Observable<void> {
             return this.http.delete<void>(`${this.baseUrl}/tasks/${task.id}`);
