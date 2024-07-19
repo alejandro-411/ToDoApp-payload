@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div *ngIf="!isFormCollapsed" class="container mt-5">
     <h2>Crear tarea</h2>
     <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" *ngIf="taskForm">
       <div class="form-group my-margin">
@@ -44,8 +44,12 @@
           (change)="onFileChange($event)"
         />
       </div>
-  
-      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Crear tarea</button>
+      
+      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Crear tarea</button>      
     </form>
   </div>
+  <div class = "text-center my-margin">
+    <button type="button" class="btn btn-primary" (click)="toggleForm()">{{ isFormCollapsed ? 'Nueva Tarea' : 'Cancelar'}}</button>
+  </div>
+  
   

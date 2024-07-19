@@ -19,24 +19,11 @@ export class PayloadService {
           map(response => response.docs)
         );
       }
-    /*
-    createTask(task: Task): Observable<Task> {
-        const formData = new FormData();
-        formData.append('title', task.title);
-        formData.append('description', task.description);
-        formData.append('completed', task.completed.toString());
-        if (task.image) {
-          formData.append('image', task.image.id);
-        }
-    
-        return this.http.post<Task>(`${this.baseUrl}/tasks`, formData);
-      }*/
 
         createTask(task: Task): Observable<Task> {
           const formData = new FormData();
           formData.append('title', task.title);
           formData.append('description', task.description);
-          //formData.append('completed', task.completed.toString());
           formData.append('completed', (task.completed ?? false).toString());
           if (task.image instanceof Blob) {  
             formData.append('image', task.image, task.image.filename);

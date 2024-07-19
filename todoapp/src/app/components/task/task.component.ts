@@ -14,6 +14,11 @@ export class TaskComponent implements OnInit {
 
   constructor(private payloadService: PayloadService) { }
 
+  /**
+   * Initializes the component.
+   * Fetches tasks from the payload service and assigns them to the component's tasks property.
+   * Handles any errors that occur during the fetch operation.
+   */
   ngOnInit(): void {
     this.payloadService.getTasks().subscribe((tasks: Task[]) => {
       this.tasks = tasks;
@@ -22,6 +27,11 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  /**
+   * Deletes a task.
+   * 
+   * @param task - The task to be deleted.
+   */
   deleteTask(task: Task): void {
     this.payloadService.deleteTask(task).subscribe({
       next: () => {
@@ -34,6 +44,9 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  /**
+   * Loads tasks from the payload service.
+   */
   loadTasks(): void{
     this.payloadService.getTasks().subscribe((tasks: Task[]) => {
       this.tasks = tasks;
@@ -42,15 +55,32 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  /**
+   * Callback function triggered when a task is created.
+   * It loads the tasks.
+   */
   onTaskCreated(): void {
     this.loadTasks()}
 
+  /**
+   * Returns the URL for the task image based on the provided image ID.
+   * @param imageId - The ID of the image.
+   * @returns The URL of the task image.
+   */
   getTaskImageUrl(imageId: string): string {
     const url = `http://localhost:3000/media/${imageId}`;  
     console.log('Image URL:', url);
     return url;
   }
 
+
+  /**
+   * Toggles the completion status of a task.
+   * If the task was completed, it marks it as incomplete.
+   * If the task was incomplete, it marks it as completed and shows an alert message.
+   * If there is an error updating the task, it reverts the change and logs an error message.
+   * @param task - The task to toggle completion status for.
+   */
   toggleTaskCompletion(task: Task): void {
     const wasCompleted = task.completed;
     task.completed = !task.completed;

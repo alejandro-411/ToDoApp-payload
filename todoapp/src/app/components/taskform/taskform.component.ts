@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PayloadService } from '../../services/payload.service';
 import { Task } from '../../models/task.model';
 
-
 @Component({
   selector: 'app-taskform',
   templateUrl: './taskform.component.html',
@@ -12,6 +11,7 @@ import { Task } from '../../models/task.model';
 export class TaskFormComponent implements OnInit {
   @Output() taskCreated = new EventEmitter<void>();
   taskForm: FormGroup;
+  isFormCollapsed: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,6 +35,10 @@ export class TaskFormComponent implements OnInit {
       });
     }
   }
+
+  toggleForm(): void{
+    this.isFormCollapsed = !this.isFormCollapsed;
+  }
   
   onSubmit(): void {
     if (this.taskForm.valid) {
@@ -44,6 +48,7 @@ export class TaskFormComponent implements OnInit {
           console.log('Task created:', newTask);
           this.taskForm.reset();
           this.taskCreated.emit();
+          this.toggleForm();
         },
         error: (error) => {
           console.error('Error creating task:', error);
