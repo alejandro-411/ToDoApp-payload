@@ -16,6 +16,7 @@ export class TaskFormComponent implements OnInit {
   taskForm: FormGroup;
   isFormCollapsed: boolean = true;
   isEditMode: boolean = false;
+  taskId: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +31,7 @@ export class TaskFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.editTaskService.fromCollapsed$.subscribe((value: boolean) => {
       this.isFormCollapsed = value;
     });
@@ -43,14 +44,25 @@ export class TaskFormComponent implements OnInit {
         this.taskForm.reset();
       }
     });
-  }
+  }*/
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes['taskToEdit'] && changes['taskToEdit'].currentValue){
-      this.isEditMode = true;
-      this.isFormCollapsed = false;
-      this.taskForm.patchValue(this.taskToEdit as any);
-    }
+   ngOnInit(): void {
+    this.editTaskService.fromCollapsed$.subscribe((value: boolean) => {
+      this.isFormCollapsed = value;
+    });
+
+    this.editTaskService.taskToEdit$.subscribe((task: Task | null) => {
+      if (task) {
+        this.isEditMode = true;
+        this.isFormCollapsed = false;
+        this.taskForm.patchValue(task);
+        this.taskId = task.id;
+      } else {
+        this.isEditMode = false;
+        this.isFormCollapsed = true;
+        this.taskForm.reset();
+      }
+    });
   }
 
   onFileChange(event: any): void {
@@ -70,47 +82,30 @@ export class TaskFormComponent implements OnInit {
       this.taskToEdit = null;
     }
   }
-  
-  /*onSubmit(): void {
-    if (this.taskForm.valid) {
-      const task: Task = this.taskForm.value;
-      this.payloadService.createTask(task).subscribe({
-        next: (newTask: Task) => {
-          console.log('Task created:', newTask);
-          this.taskForm.reset();
-          this.taskCreated.emit();
-          this.toggleForm();
-        },
-        error: (error) => {
-          console.error('Error creating task:', error);
-        }
-      });
-    }
-  }*/
-  
+
     onSubmit(): void {
       if (this.taskForm.invalid) {
         return;
       }
-    
+
       const task: Task = {
-        id: 0, // Add the 'id' property with a default value
+        id: this.taskId,
         title: this.taskForm.get('title')?.value,
         description: this.taskForm.get('description')?.value,
         completed: this.taskForm.get('completed')?.value,
-        image: this.taskForm.get('image')?.value
+        image: this.taskForm.get('image')?.value,
       };
-    
-      if (this.isEditMode && this.taskToEdit) {
-        task.id = this.taskToEdit.id;
+      if (this.isEditMode && task.id) {
         this.payloadService.editTask(task).subscribe((updatedTask: Task) => {
           this.taskUpdated.emit(updatedTask);
           this.toggleForm();
+          console.log('ID de la tarea (editmode):', task.id);
         }, error => {
           console.error('Error updating task:', error);
         });
       } else {
         this.payloadService.createTask(task).subscribe(() => {
+          console.log('ID de la tarea (createtask):', task.id);
           this.taskCreated.emit();
           this.toggleForm();
         }, error => {

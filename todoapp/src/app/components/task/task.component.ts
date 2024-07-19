@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { PayloadService } from '../../services/payload.service';
 import { EditTaskService } from 'src/app/services/edit-task.service';
+import { TaskFormComponent } from '../taskform/taskform.component';
 
 
 @Component({
@@ -115,7 +116,10 @@ export class TaskComponent implements OnInit {
     this.taskToEdit = task;
     this.editTaskService.setTaskToEdit(task);
     this.editTaskService.setFormCollapsed(false);
+    
+
     console.log('Task to edit:', this.taskToEdit);
+    console.log('Task id:', task.id)
   }
 
   onTaskUpdated(updatedTask: Task): void {
