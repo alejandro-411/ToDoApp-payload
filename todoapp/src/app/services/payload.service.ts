@@ -20,49 +20,33 @@ export class PayloadService {
         );
       }
 
-        createTask(task: Task): Observable<Task> {
-          const formData = new FormData();
-          formData.append('title', task.title);
-          formData.append('description', task.description);
-          formData.append('completed', (task.completed ?? false).toString());
-          if (task.image instanceof Blob) {  
-            formData.append('image', task.image, task.image.filename);
-          }
-        
-          return this.http.post<Task>(`${this.baseUrl}/tasks`, formData);
+      createTask(task: Task): Observable<Task> {
+        const formData = new FormData();
+        formData.append('title', task.title);
+        formData.append('description', task.description);
+        formData.append('completed', (task.completed ?? false).toString());
+        if (task.image instanceof Blob) {  
+          formData.append('image', task.image, task.image.filename);
         }
-        
-          /*
-          editTask(task: Task): Observable<Task> {
-            const formData = new FormData();
-            formData.append('title', task.title);
-            formData.append('description', task.description);
-            formData.append('completed', task.completed.toString());
-        
-            if (task.image && (task.image instanceof Blob)) {
-              formData.append('image', task.image);  // Asume que task.image es un Blob
-            } else if (task.image && task.image.filename) {
-              // Si la imagen ya existe y solo estamos enviando el identificador
-              formData.append('imageID', task.image.id); 
-            }
-        
-            return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
-          }*/
+      
+        return this.http.post<Task>(`${this.baseUrl}/tasks`, formData);
+      }
+      
 
-            editTask(task: Task): Observable<Task> {
-              const formData = new FormData();
-              formData.append('title', task.title);
-              formData.append('description', task.description);
-              formData.append('completed', task.completed.toString());
-              if (task.image) {
-                formData.append('image', task.image.id);
-              }
-          
-              return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
-            }
+      editTask(task: Task): Observable<Task> {
+        const formData = new FormData();
+        formData.append('title', task.title);
+        formData.append('description', task.description);
+        formData.append('completed', task.completed.toString());
+        if (task.image) {
+          formData.append('image', task.image.id);
+        }
+    
+        return this.http.put<Task>(`${this.baseUrl}/tasks/${task.id}`, formData);
+      }
 
-          deleteTask(task: Task): Observable<void> {
-            return this.http.delete<void>(`${this.baseUrl}/tasks/${task.id}`);
-          }
-  
+      deleteTask(task: Task): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/tasks/${task.id}`);
+      }
+
 }

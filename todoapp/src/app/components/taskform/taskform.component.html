@@ -45,11 +45,15 @@
         />
       </div>
       
-      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">{{ isEditMode ? 'Actualizar' : 'Agregar' }}</button>      
+      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">
+        {{ isEditMode ? 'Actualizar' : 'Agregar' }}
+      </button>      
     </form>
   </div>
   <div class = "text-center my-margin">
-    <button type="button" class="btn btn-primary" (click)="toggleForm()">{{ isFormCollapsed ? 'Nueva Tarea' : 'Cancelar'}}</button>
+    <button type="button" class="btn btn-primary" (click)="toggleForm()">
+      {{ isFormCollapsed ? 'Nueva Tarea' : 'Cancelar'}}
+    </button>
   </div>
   
   

@@ -2,8 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { PayloadService } from '../../services/payload.service';
 import { EditTaskService } from 'src/app/services/edit-task.service';
-import { TaskFormComponent } from '../taskform/taskform.component';
-
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-task',
@@ -19,7 +18,8 @@ export class TaskComponent implements OnInit {
 
   constructor(
     private payloadService: PayloadService,
-    private editTaskService: EditTaskService // Inyecta el servicio
+    private editTaskService: EditTaskService, // Inyecta el servicio
+    private cdr: ChangeDetectorRef
   ) {}
 
   /**
@@ -70,7 +70,7 @@ export class TaskComponent implements OnInit {
    */
   onTaskCreated(): void {
     this.loadTasks()}
-
+    
   /**
    * Returns the URL for the task image based on the provided image ID.
    * @param imageId - The ID of the image.
@@ -116,17 +116,13 @@ export class TaskComponent implements OnInit {
     this.taskToEdit = task;
     this.editTaskService.setTaskToEdit(task);
     this.editTaskService.setFormCollapsed(false);
-    
-
     console.log('Task to edit:', this.taskToEdit);
-    console.log('Task id:', task.id)
   }
 
-  onTaskUpdated(updatedTask: Task): void {
-   const index = this.tasks.findIndex(t => t.id === updatedTask.id);
-   if(index !== -1) {
-     this.tasks[index] = updatedTask;
-   }
-  }
+    onTaskUpdated(updatedTask: Task): void {
+      this.loadTasks();
+      this.taskToEdit = null;
+      console.log('ontaskupdated method works!', updatedTask.id);
+    }
 
 }

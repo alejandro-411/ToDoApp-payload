@@ -31,21 +31,6 @@ export class TaskFormComponent implements OnInit {
     });
   }
 
-  /*ngOnInit(): void {
-    this.editTaskService.fromCollapsed$.subscribe((value: boolean) => {
-      this.isFormCollapsed = value;
-    });
-
-    this.editTaskService.taskToEdit$.subscribe((task: Task) => {
-      this.taskToEdit = task;
-      if(task){
-        this.taskForm.patchValue(task);
-      }else{
-        this.taskForm.reset();
-      }
-    });
-  }*/
-
    ngOnInit(): void {
     this.editTaskService.fromCollapsed$.subscribe((value: boolean) => {
       this.isFormCollapsed = value;
@@ -75,8 +60,10 @@ export class TaskFormComponent implements OnInit {
   }
 
   toggleForm(): void{
+    console.log('toggleform:');
     this.isFormCollapsed = !this.isFormCollapsed;
     if(this.isFormCollapsed){
+      console.log('toggle condition');
       this.isEditMode = false;
       this.taskForm.reset();
       this.taskToEdit = null;
@@ -98,7 +85,8 @@ export class TaskFormComponent implements OnInit {
       if (this.isEditMode && task.id) {
         this.payloadService.editTask(task).subscribe((updatedTask: Task) => {
           this.taskUpdated.emit(updatedTask);
-          this.toggleForm();
+          //this.toggleForm();
+          this.hideForm();
           console.log('ID de la tarea (editmode):', task.id);
         }, error => {
           console.error('Error updating task:', error);
@@ -108,11 +96,20 @@ export class TaskFormComponent implements OnInit {
           console.log('ID de la tarea (createtask):', task.id);
           this.taskCreated.emit();
           this.toggleForm();
+          this.hideForm();
         }, error => {
           console.error('Error creating task:', error);
         });
       }
+      console.log('holaaa:', task);
     }
 
+    private hideForm(): void {
+      this.isFormCollapsed = true;
+      this.isEditMode = false;
+      this.taskForm.reset();
+      this.editTaskService.setFormCollapsed(true);
+      this.editTaskService.setTaskToEdit(null);
+    }
 
 }
