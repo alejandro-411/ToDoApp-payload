@@ -1,5 +1,4 @@
 import { CollectionConfig } from "payload/types";   
-import  Media from "./Media";
 
 const Tasks: CollectionConfig = {
     slug: 'tasks',
@@ -28,10 +27,8 @@ const Tasks: CollectionConfig = {
             name: 'image',
             type: 'upload',
             relationTo: 'media',
+            required: false
         },
-
-
-
     ]
 };
 

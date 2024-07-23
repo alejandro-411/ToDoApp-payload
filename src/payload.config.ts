@@ -1,20 +1,30 @@
 import path from 'path'
 
+
 import { payloadCloud } from '@payloadcms/plugin-cloud'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import { buildConfig } from 'payload/config'
-import { config as dotenvConfig } from 'dotenv'
 
 import Users from './collections/Users'
 import Tasks from './collections/Tasks'
-import Media from './collections/Media'
+//import Media from './collections/Media'
+import { Media } from './collections/Media'
+
+
 
 export default buildConfig({
+  
+  upload: {
+    limits:{
+      fileSize: 1500000
+    }
+  },
+
   admin: {
     user: Users.slug,
-    bundler: webpackBundler(),
+    bundler: webpackBundler()
   },
   editor: slateEditor({}),
   collections: [Users,
@@ -33,4 +43,6 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI,
     },
   }),
+
+
 })

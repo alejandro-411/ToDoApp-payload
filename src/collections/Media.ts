@@ -1,6 +1,6 @@
 import { CollectionConfig } from "payload/types";
 
-const Media: CollectionConfig = {
+export const Media: CollectionConfig = {
   slug: 'media',
   access:{
     create: () => true,
@@ -17,9 +17,9 @@ const Media: CollectionConfig = {
     {
       name: 'altText',
       type: 'text',
-      required: true,
+      required: false,
     },
   ],
 };
 
-export default Media;
+//export default Media;

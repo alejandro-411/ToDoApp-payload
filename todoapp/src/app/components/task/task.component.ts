@@ -18,7 +18,7 @@ export class TaskComponent implements OnInit {
 
   constructor(
     private payloadService: PayloadService,
-    private editTaskService: EditTaskService, // Inyecta el servicio
+    private editTaskService: EditTaskService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -78,9 +78,14 @@ export class TaskComponent implements OnInit {
    */
   getTaskImageUrl(imageId: string): string {
     const url = `http://localhost:3000/media/${imageId}`;  
-    console.log('Image URL:', url);
+    //console.log('Image URL:', url);
     return url;
   }
+
+   /* getTaskImageUrl(image: { id: string; filename: string } | null): string {
+      if (!image) return '';  // o una URL de imagen por defecto
+      return `http://localhost:3000/media/${image.id}`;  // Ajusta la URL base según tu configuración
+    }*/
 
 
   /**
@@ -90,13 +95,12 @@ export class TaskComponent implements OnInit {
    * If there is an error updating the task, it reverts the change and logs an error message.
    * @param task - The task to toggle completion status for.
    */
-  toggleTaskCompletion(task: Task): void {
+  /*toggleTaskCompletion(task: Task): void {
     const wasCompleted = task.completed;
     task.completed = !task.completed;
     this.payloadService.editTask(task).subscribe({
       next: (updatedTask: Task) => {
         if (!wasCompleted) {
-          // Solo muestra la alerta si la tarea ahora está completada
           this.showAlert = true;
           this.alertMessage = '¡Tarea completada con éxito!';
           setTimeout(() => this.showAlert = false, 3000);
@@ -105,12 +109,42 @@ export class TaskComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error updating task:', error);
-        // Revertir el cambio si la actualización falla
         task.completed = wasCompleted;
-        // Opcional: Mostrar un mensaje de error al usuario
       }
     });
-  }
+  }*/
+
+    toggleTaskCompletion(task: Task): void {
+      const wasCompleted = task.completed;
+      task.completed = !task.completed;
+    
+      // Crear un nuevo FormData
+      const formData = new FormData();
+      formData.append('id', task.id.toString());
+      formData.append('completed', task.completed.toString());
+      formData.append('title', task.title);
+      formData.append('description', task.description || '');
+    
+      // Si la tarea tiene una imagen, añade su ID
+      if (task.image && task.image.id) {
+        formData.append('imageId', task.image.id);
+      }
+    
+      this.payloadService.editTask(formData).subscribe({
+        next: (updatedTask: Task) => {
+          if (!wasCompleted) {
+            this.showAlert = true;
+            this.alertMessage = '¡Tarea completada con éxito!';
+            setTimeout(() => this.showAlert = false, 3000);
+          }
+          console.log('Task updated:', updatedTask);
+        },
+        error: (error) => {
+          console.error('Error updating task:', error);
+          task.completed = wasCompleted;
+        }
+      });
+    }
 
   editTask(task: Task): void {
     this.taskToEdit = task;
@@ -122,7 +156,6 @@ export class TaskComponent implements OnInit {
     onTaskUpdated(updatedTask: Task): void {
       this.loadTasks();
       this.taskToEdit = null;
-      console.log('ontaskupdated method works!', updatedTask.id);
     }
 
 }
