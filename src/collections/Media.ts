@@ -11,7 +11,7 @@ const Media: CollectionConfig = {
   upload: {
     staticDir: 'media',
     staticURL: '/media',
-   // mimeTypes: ['image/*'],
+    mimeTypes: ['image/*'],
   },
   fields: [
     {

@@ -29,16 +29,7 @@ const Tasks: CollectionConfig = {
             type: 'relationship',
             relationTo: 'media',
             required: false
-            /*filterOptions: ({id}) =>{
-                return{
-                    id:{
-                        not_in: id
-                    }
-                }
-            }*/
         },
-
-
 
     ]
 };
