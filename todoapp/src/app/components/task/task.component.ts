@@ -76,9 +76,9 @@ export class TaskComponent implements OnInit {
    * @param imageId - The ID of the image.
    * @returns The URL of the task image.
    */
-  getTaskImageUrl(imageId: string): string {
-    const url = `http://localhost:3000/media/${imageId}`;  
-    console.log('Image URL:', url);
+  getTaskImageUrl(fileName: string): string {
+    const url = `http://localhost:3000/media/${fileName}`;  
+    //console.log('Image URL:', url);
     return url;
   }
 

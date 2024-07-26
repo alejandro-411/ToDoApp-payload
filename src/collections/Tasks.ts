@@ -1,5 +1,5 @@
 import { CollectionConfig } from "payload/types";   
-import  Media from "./Media";
+
 
 const Tasks: CollectionConfig = {
     slug: 'tasks',
@@ -26,8 +26,16 @@ const Tasks: CollectionConfig = {
             defaultValue: false},
         {
             name: 'image',
-            type: 'upload',
+            type: 'relationship',
             relationTo: 'media',
+            required: false
+            /*filterOptions: ({id}) =>{
+                return{
+                    id:{
+                        not_in: id
+                    }
+                }
+            }*/
         },
 
 

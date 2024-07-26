@@ -57,6 +57,7 @@ export class TaskFormComponent implements OnInit {
         image: file
       });
     }
+    console.log('Imagen (onfileChange):', this.taskForm.get('image')?.value);
   }
 
   toggleForm(): void{
@@ -70,7 +71,7 @@ export class TaskFormComponent implements OnInit {
     }
   }
 
-    onSubmit(): void {
+   /* onSubmit(): void {
       if (this.taskForm.invalid) {
         return;
       }
@@ -82,6 +83,7 @@ export class TaskFormComponent implements OnInit {
         completed: this.taskForm.get('completed')?.value,
         image: this.taskForm.get('image')?.value,
       };
+      console.log('Imagen:', task.image);
       if (this.isEditMode && task.id) {
         this.payloadService.editTask(task).subscribe((updatedTask: Task) => {
           this.taskUpdated.emit(updatedTask);
@@ -94,6 +96,7 @@ export class TaskFormComponent implements OnInit {
       } else {
         this.payloadService.createTask(task).subscribe(() => {
           console.log('ID de la tarea (createtask):', task.id);
+          console.log('Datos imagen (createTask):', task.image);
           this.taskCreated.emit();
           this.toggleForm();
           this.hideForm();
@@ -101,8 +104,47 @@ export class TaskFormComponent implements OnInit {
           console.error('Error creating task:', error);
         });
       }
-      console.log('holaaa:', task);
+      console.log('Tarea::', task);
+    }*/
+
+    onSubmit(): void {
+    if (this.taskForm.invalid) {
+        return;
     }
+
+    const task: Task = {
+        id: this.taskId,
+        title: this.taskForm.get('title')?.value,
+        description: this.taskForm.get('description')?.value,
+        completed: this.taskForm.get('completed')?.value,
+        image: this.taskForm.get('image')?.value,
+    };
+    console.log('Imagen:', task.image);
+
+    if (this.isEditMode && task.id) {
+        this.payloadService.editTask(task).subscribe((updatedTask: Task) => {
+            this.taskUpdated.emit(updatedTask);
+            this.hideForm();
+            console.log('ID de la tarea (editmode):', task.id);
+        }, error => {
+            console.error('Error updating task:', error);
+        });
+    } else {
+        this.payloadService.createTask(task).subscribe(() => {
+            console.log('ID de la tarea (createtask):', task.id);
+            console.log('Datos imagen (createTask):', task.image);
+            this.taskCreated.emit();
+            this.toggleForm();
+            this.hideForm();
+        }, error => {
+            console.error('Error creating task:', error);
+        });
+    }
+    console.log('Tarea:', task);
+}
+  
+    
+    
 
     private hideForm(): void {
       this.isFormCollapsed = true;
