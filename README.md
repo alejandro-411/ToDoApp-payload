@@ -47,6 +47,7 @@ Esta es una aplicación sencilla de lista de tareas (To-Do List) creada con Angu
 5. Inicia el frontend
 
     cd todoapp
+    
     ng serve
 
     Esto iniciará la aplicación Angular en http://localhost:4200.
