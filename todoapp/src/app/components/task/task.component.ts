@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { PayloadService } from '../../services/payload.service';
 import { EditTaskService } from 'src/app/services/edit-task.service';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-task',
@@ -19,7 +18,6 @@ export class TaskComponent implements OnInit {
   constructor(
     private payloadService: PayloadService,
     private editTaskService: EditTaskService, // Inyecta el servicio
-    private cdr: ChangeDetectorRef
   ) {}
 
   /**
@@ -96,7 +94,6 @@ export class TaskComponent implements OnInit {
     this.payloadService.editTask(task).subscribe({
       next: (updatedTask: Task) => {
         if (!wasCompleted) {
-          // Solo muestra la alerta si la tarea ahora está completada
           this.showAlert = true;
           this.alertMessage = '¡Tarea completada con éxito!';
           setTimeout(() => this.showAlert = false, 3000);
@@ -105,13 +102,17 @@ export class TaskComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error updating task:', error);
-        // Revertir el cambio si la actualización falla
         task.completed = wasCompleted;
-        // Opcional: Mostrar un mensaje de error al usuario
       }
     });
   }
 
+  /**
+   * Edits a task.
+   * 
+   * @param task - The task to be edited.
+   * @returns void
+   */
   editTask(task: Task): void {
     this.taskToEdit = task;
     this.editTaskService.setTaskToEdit(task);
@@ -119,6 +120,12 @@ export class TaskComponent implements OnInit {
     console.log('Task to edit:', this.taskToEdit);
   }
 
+    /**
+     * Updates a task and performs necessary actions.
+     * 
+     * @param updatedTask - The updated task object.
+     * @returns void
+     */
     onTaskUpdated(updatedTask: Task): void {
       this.loadTasks();
       this.taskToEdit = null;

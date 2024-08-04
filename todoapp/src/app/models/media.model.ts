@@ -1,4 +1,3 @@
-// media.model.ts
 export interface Media {
   id: number;
   altText: string;
